@@ -1,8 +1,42 @@
 .points {
     font-size: 20px;
     text-align: right;
-} 
+}
 
 .itemElement {
     margin-bottom: 10px;
+}
+
+#item-header-showComments {
+    pointer-events: none;
+    cursor: default;
+}
+
+.aasTreeView .closed span.expander,
+.aasTreeView .open span.expander {
+    background: none;
+    position: relative;
+}
+
+    .aasTreeView .open span.expander:before,
+    .aasTreeView .closed span.expander:before {
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: inherit;
+        font-size: 18px;
+        padding-right: 0.5em;
+        position: absolute;
+    }
+
+    .aasTreeView .open span.expander:before {
+        content: "\f0da";
+    }
+
+    .aasTreeView .closed span.expander:before {
+        content: "\f0d8";
+    }
+
+.aasTreeView .closed .rowContent {
+    display: none;
 }

@@ -15,10 +15,12 @@ namespace HackerNews.Services
         {
             var translators = new List<RewriteOrRedirect>();
 
-            var pattern = @"/hackernews/(?<type>item|user)/(?<id>\d{1,10})$";
-            //var pattern = @"/hackernews/(?<type>item|user)/(id=)?(?<id>\d{1,10})$";
+            //var patternItem = @"/hackernews/(?<type>item|user)/(?<id>\d{1,10})$";
+            var patternItem = @"/hackernews/(?<type>item|user)/(id=)?(?<id>\d{1,10})$";
 
-            var reg = new Regex(pattern, RegexOptions.IgnoreCase);
+            var reg = new Regex(patternItem, RegexOptions.IgnoreCase);
+
+            var regCategory = new Regex(@"/hackernews/(?<type>jobs|ask|show)$", RegexOptions.IgnoreCase);
 
             translators.Add((Uri url, ref bool redirect) =>
             {
@@ -38,6 +40,20 @@ namespace HackerNews.Services
 
                     return returnUrl;
                 }
+
+                var mCategory = regCategory.Match(url.AbsoluteUri);
+
+                if (mCategory.Success)
+                {
+                    var type = mCategory.Groups["type"].Value.ToLower();
+
+                    var redirectUrl = string.Format("/HackerNews/app.ashx?@{0}", type);
+
+                    var returnUrl = regCategory.Replace(url.AbsoluteUri, redirectUrl);
+
+                    return returnUrl;
+                }
+
                 return null;
             });
 

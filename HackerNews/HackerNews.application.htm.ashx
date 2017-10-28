@@ -5,7 +5,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes" />
-
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" sizes="48x48" type="image/png" href="~/images/Logo128x128.png">
 <!-- CSS Link -->
 <link rel='stylesheet' type='text/css' href='../Aspectize.core/Aspectize.css' />
 

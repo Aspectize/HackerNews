@@ -17,6 +17,7 @@ namespace HackerNews
 		{
 			public const string item = "item";
 			public const string user = "user";
+			public const string page = "page";
 		}
 
 		public static partial class Relations
@@ -57,7 +58,7 @@ namespace HackerNews
 			public const string deleted = "deleted";
 			public const string dead = "dead";
 			public const string level = "level";
-			public const string specificType = "specificType";
+			public const string page = "page";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -164,10 +165,10 @@ namespace HackerNews
 		}
 
 		[Data]
-		public string specificType
+		public int page
 		{
-			get { return getValue<string>("specificType"); }
-			set { setValue<string>("specificType", value); }
+			get { return getValue<int>("page"); }
+			set { setValue<int>("page", value); }
 		}
 
 	}
@@ -222,6 +223,60 @@ namespace HackerNews
 		{
 			get { return getValue<int>("karma"); }
 			set { setValue<int>("karma", value); }
+		}
+
+	}
+
+	[DataDefinition(MustPersist = false)]
+	public class page : Entity, IDataWrapper
+	{
+		public static partial class Fields
+		{
+			public const string id = "id";
+			public const string type = "type";
+			public const string number = "number";
+			public const string last = "last";
+			public const string previous = "previous";
+		}
+
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public string id
+		{
+			get { return getValue<string>("id"); }
+			set { setValue<string>("id", value); }
+		}
+
+		[Data]
+		public string type
+		{
+			get { return getValue<string>("type"); }
+			set { setValue<string>("type", value); }
+		}
+
+		[Data]
+		public int number
+		{
+			get { return getValue<int>("number"); }
+			set { setValue<int>("number", value); }
+		}
+
+		[Data(DefaultValue = false)]
+		public bool last
+		{
+			get { return getValue<bool>("last"); }
+			set { setValue<bool>("last", value); }
+		}
+
+		[Data(DefaultValue = true)]
+		public bool previous
+		{
+			get { return getValue<bool>("previous"); }
+			set { setValue<bool>("previous", value); }
 		}
 
 	}

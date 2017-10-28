@@ -22,17 +22,28 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-left">
-                        <li class=""><a name="items">new</a></li>
+                        <li class=""><a name="news">new</a></li>
                         <li class=""><a name="show">show</a></li>
                         <li class=""><a name="ask">ask</a></li>
                         <li class=""><a name="jobs">jobs</a></li>
 
                     </ul>
-
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class=""><a href="https://aspectize.com">powered by aspectize</a></li>
+                    </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
         <div aas-name="ZoneInfo" aas-type="Panel" class="container"></div>
+    </div>
+    
+    <div aas-control="listheader">
+        <div class="row itemElement">
+            <div class="col-xs-12 text-center">
+                <a name="previous" class="{displayPrevious}">previous</a>&nbsp;<span>{number}</span>&nbsp;<a name="next" class="{displayNext}">next</a>
+            </div>
+        </div>
+        <div aas-name="ZoneInfo" aas-type="Panel"></div>
     </div>
 
     <div aas-control="items">
@@ -60,7 +71,7 @@
     </div>
 
     <div aas-control="item">
-        <div class="row">
+        <div class="row itemElement">
             <div aas-name="header" aas-type="itemElement"></div>
         </div>
         <div class="row">
@@ -71,27 +82,18 @@
     <div aas-control="name:'CommentTree', binding:'TreeBinding', properties : {AfterNodeCreation:0}, templateBuilders:['TreeViewBuilder']" class='aasTreeView'></div>
 
     <div aas-control="name:'CommentNode', isControlPart:true, events:['OnFirstExpand', 'Click'], properties:{ImageUrl:null, AutoExpand:false, HasChild:false}">
-        <div class="row">
+        <div class="row itemElement {commentId}">
             <div class="col-xs-12">
                 <div class="row">
                     <div class="col-xs-12">
-                        <span class="expander">&#8203;</span><span class="node" title="{ToolTip}"><a name="showUser">{user}</a>&nbsp;<span>{timeago}</span></span>
+                        <span class="expander">&#8203;</span>&nbsp;<span class="node" title="{ToolTip}"><a name="showUser">{user}</a>&nbsp;<span>{timeago}</span>&nbsp;<span class="{displayCommentsCount}">(+<span>{commentscount}</span>)</span></span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row rowContent">
                     <div class="col-xs-12 content">
                         {content}
                     </div>
                 </div>
-            </div>
-        </div>
-        <ul></ul>
-    </div>
-
-    <div aas-control="name:'CommentNode2', isControlPart:true, events:['OnFirstExpand', 'Click'], properties:{ImageUrl:null, AutoExpand:false, HasChild:false}">
-        <div class="row">
-            <div class="col-xs-12">
-                {content}
             </div>
         </div>
         <ul></ul>
@@ -122,7 +124,7 @@
                 <a name="showJob">{jobtitle}</a><span class="{displayDomain}">&nbsp;(<span>{domain}</span>)</span>
             </div>
         </div>
-        <div class="row">
+        <div class="row itemElement">
             <div class="col-xs-12"><span>{timeago}</span></div>
         </div>
     </div>
@@ -132,7 +134,7 @@
     </div>
 
     <div aas-control="askElement">
-        <div class="row">
+        <div class="row itemElement">
             <div class="col-xs-12">
                 <div class="row">
                     <div class="col-xs-12">
@@ -148,6 +150,6 @@
         </div>
     </div>
 
-    
+
 </body>
 </html>

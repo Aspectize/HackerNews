@@ -1,0 +1,20 @@
+﻿{
+  "name": "Aspectize HackerNews",
+  "short_name": "HackerNews",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "A simply Hacker News app, built with Aspectize",
+  "icons": [
+    {
+      "src": "images/Logo128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "web"
+    }
+  ]
+}

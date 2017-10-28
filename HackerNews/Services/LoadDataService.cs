@@ -25,7 +25,19 @@ namespace HackerNews
 
             var url = rootUrl + $"{type}.json?page={page}";
 
-            return getDataFromHNAPI(url, em, "item", type);
+            getDataFromHNAPI(url, em, "item", type);
+
+            var items = em.GetAllInstances<item>();
+
+            items.ForEach(e => e.page = page);
+
+            var newPage = em.CreateInstance<page>(new Dictionary<string, object>() { { "id", type + "-" + page }, { "type", type }, { "number", page } });
+
+            newPage.last = (items.Count < 30);
+
+            em.Data.AcceptChanges();
+
+            return em.Data;
         }
 
         DataSet ILoadDataService.GetItem(string type, string id)
@@ -34,10 +46,12 @@ namespace HackerNews
 
             var url = rootUrl + $"{type}/{id}.json";
 
-            return getDataFromHNAPI(url, em, type, type);
+            getDataFromHNAPI(url, em, type, type);
+
+            return em.Data;
         }
 
-        private DataSet getDataFromHNAPI(string url, IEntityManager em, string type, string specificType)
+        private void getDataFromHNAPI(string url, IEntityManager em, string type, string specificType)
         {
             System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
 
@@ -45,15 +59,16 @@ namespace HackerNews
 
             em.CreateInstanceFromJson(type, json);
 
-            // Must add a specificType to distinguish news and show type (both have type link) !
-            foreach (item item in em.GetAllInstances<item>())
+            // Must add a specificType to distinguish news and show type (both have type link) to manage repeater filter
+            if (specificType == "show")
             {
-                item.specificType = specificType;
+                foreach (item item in em.GetAllInstances<item>())
+                {
+                    item.type = "show";
+                }
             }
 
             em.Data.AcceptChanges();
-
-            return em.Data;
         }
 
     }

@@ -1,7 +1,7 @@
 function Main() {
     Aspectize.Host.InitApplication();
 
-    Aspectize.Host.ExecuteCommand('UIService.ShowView', 'items');
+    Aspectize.Host.ExecuteCommand('UIService.ShowView', 'news');
 
-    Aspectize.InitializeHistoryManager('items');
+    Aspectize.InitializeHistoryManager({ ViewName: 'news', SchemaPath: 'MainData.page', Id: 'news-1', Url: 'app.ashx' });
 }

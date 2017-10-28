@@ -17,7 +17,7 @@
         <entityProperty name="deleted" type="Boolean" nullable="true" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="dead" type="Boolean" nullable="true" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="level" type="Int32" nullable="true" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
-        <entityProperty name="specificType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="page" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="02bc0f04-9bbb-4818-9b11-111ad4ff44c2" name="user" guid="c2b5f97c-b0fd-48ee-97f4-bdcaf64971f2" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
@@ -27,6 +27,15 @@
         <entityProperty name="createdtime" physicalName="created_time" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="created" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="karma" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+      </properties>
+    </entity>
+    <entity Id="ee78f635-a3e7-4760-8b8c-eecf6bd8a84c" name="page" guid="6a8dcf46-07f6-412d-a834-c6867e80dbd7" mustPersist="false" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="id" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="type" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="number" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="last" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="previous" type="Boolean" defaultValue="true" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
   </entities>

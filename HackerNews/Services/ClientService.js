@@ -2,65 +2,114 @@
 
 Global.ClientService = {
 
-   aasService:'ClientService',
-   MainData: 'MainData',
-   aasCommandAttributes: {
-       DisplayItem: { CanExecuteOnStart: true }
-   },
+    aasService: 'ClientService',
+    MainData: 'MainData',
+    aasCommandAttributes: {
+        DisplayItem: { CanExecuteOnStart: true }
+    },
 
-   DisplayItem: function(type, id) {
-       var cmd = Aspectize.Host.PrepareCommand();
+    DisplayItem: function (type, id) {
+        var cmd = Aspectize.Host.PrepareCommand();
 
-       cmd.Attributes.aasAsynchronousCall = true;
-       cmd.Attributes.aasShowWaiting = true;
-       cmd.Attributes.aasDataName = this.MainData;
-       cmd.Attributes.aasMergeData = true;
+        cmd.Attributes.aasAsynchronousCall = true;
+        cmd.Attributes.aasShowWaiting = true;
+        cmd.Attributes.aasDataName = this.MainData;
+        cmd.Attributes.aasMergeData = true;
 
-       cmd.OnComplete = function (result) {
-           Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.ShowView(type));
-       };
+        cmd.OnComplete = function (result) {
+            Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.ShowView(type));
+        };
 
-       cmd.Call('Server/LoadDataService.GetItem', type, id);
-   },
-      
-   //InitItemType: function (itemType) {
-   //    var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
+        cmd.Call('Server/LoadDataService.GetItem', type, id);
+    },
 
-   //    var currentPages = em.GetAllInstances('CurrentPage');
+    SetHtml: function (id, content) {
+        var elementId = '#comment-TreeViewComments-' + id;
 
-   //    var found = false;
-   //    for (var i = 0; i < currentPages.length; i++) {
-   //        var currentPage = currentPages[i];
+        var jqId = elementId.replace(/(:|;|\.|\[|\])/g, "\\$1");
 
-   //        if (currentPage.itemType == itemType) {
-   //            found = true;
-   //            break
-   //        }
-   //    }
+        var element = $('.' + id + ' .content');
 
-   //    if (!found) {
-   //        var currentPage = em.CreateInstance('CurrentPage');
+        element.html(content);
+    },
 
-   //        currentPage.SetField('itemType', itemType);
-   //    }
+    ActiveMenuBar: function (menuSelector, activeMenuSelector) {
+        $(menuSelector + ' > ul > li').removeClass('active');
+        $(menuSelector + ' > ul > li ' + activeMenuSelector).parent().addClass('active');
+    },
 
+    ActivatePage: function(type) {
+        Aspectize.Host.ExecuteCommand(aas.Services.Browser.ClientService.ActiveMenuBar('#bs-example-navbar-collapse-1', '#Home-' + type));
 
-   //},
+        var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
 
-   SetHtml: function (id, content) {
-       var elementId = '#comment-TreeViewComments-' + id;
+        var pages = em.GetAllInstances('page');
+        
+        var pageTypes = pages.Filter('type == \'' + type + '\' && previous');
 
-       var jqId = elementId.replace(/(:|;|\.|\[|\])/g, "\\$1");
+        if (pageTypes.length > 0) {
+            var page = pageTypes[0];
+            Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.page, page.id));
 
-       var element = $(jqId + ' .content');
+            var url = (page.id == 'news-1') ? 'app.ashx' : 'news?page=' + page.number;
+            Aspectize.Host.ExecuteCommand(aas.Services.Browser.History.PushState(type, aas.Path.MainData.page, page.type + '-' + page.number, '', url));
+        }
+    },
 
-       element.html(content);
-   },
+    PreviousPage: function (type, number) {
+        var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
 
-   ActiveMenuBar: function (menuSelector, activeMenuSelector) {
-       $(menuSelector + ' > ul > li').removeClass('active');
-       $(menuSelector + ' > ul > li ' + activeMenuSelector).parent().addClass('active');
-   }
+        var pages = em.GetAllInstances('page').Filter('type == \'' + type + '\'');
+
+        for (var i = 0; i < pages.length; i++) {
+            pages[i].SetField('previous', false);
+        }
+
+        var page = em.GetInstance('page', { id: type + '-' + (number - 1) });
+        page.SetField('previous', true);
+
+        Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.page, type + '-' + page.number));
+
+        Aspectize.Host.ExecuteCommand(aas.Services.Browser.History.PushState(type, aas.Path.MainData.page, type + '-' + page.number, '', type + '?page=' + page.number));
+    },
+
+    NextPage: function (type, number, pushstate) {
+        var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
+
+        var pages = em.GetAllInstances('page').Filter('type == \'' + type +'\'');
+
+        for (var i = 0; i < pages.length; i++) {
+            pages[i].SetField('previous', false);
+        }
+
+        var page = em.GetInstance('page', { id: type + '-' + (number + 1) });
+
+        function navigate(page) {
+            page.SetField('previous', true);
+            Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.page, type + '-' + page.number));
+            if (pushstate) {
+                Aspectize.Host.ExecuteCommand(aas.Services.Browser.History.PushState(type, aas.Path.MainData.page, type + '-' + page.number, '', type + '?page=' + page.number));
+            }
+        }
+
+        if (!page) {
+            var cmd = Aspectize.Host.PrepareCommand();
+
+            cmd.Attributes.aasAsynchronousCall = true;
+            cmd.Attributes.aasShowWaiting = true;
+            cmd.Attributes.aasDataName = this.MainData;
+            cmd.Attributes.aasMergeData = true;
+
+            cmd.OnComplete = function (result) {
+                page = em.GetInstance('page', { id: type + '-' + (number + 1) });
+                navigate(page);
+            };
+
+            cmd.Call('Server/LoadDataService.GetItemPage', type, (number + 1));
+        } else {
+            navigate(page);
+        }
+    }
 
 };
 
