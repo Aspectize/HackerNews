@@ -1,6 +1,4 @@
-﻿/// <reference path="S:\Delivery\Aspectize.core\AspectizeIntellisense.js" />
-
-Global.ClientService = {
+﻿Global.ClientService = {
 
     aasService: 'ClientService',
     MainData: 'MainData',
@@ -23,12 +21,8 @@ Global.ClientService = {
         cmd.Call('Server/LoadDataService.GetItem', type, id);
     },
 
-    SetHtml: function (id, content) {
-        var elementId = '#comment-TreeViewComments-' + id;
-
-        var jqId = elementId.replace(/(:|;|\.|\[|\])/g, "\\$1");
-
-        var element = $('.' + id + ' .content');
+    SetHtml: function (aasEventArg, content) {
+        var element = $(aasEventArg.HtmlItem).find('.content');
 
         element.html(content);
     },
@@ -73,7 +67,7 @@ Global.ClientService = {
         Aspectize.Host.ExecuteCommand(aas.Services.Browser.History.PushState(type, aas.Path.MainData.page, type + '-' + page.number, '', type + '?page=' + page.number));
     },
 
-    NextPage: function (type, number, pushstate) {
+    NextPage: function (type, number) {
         var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
 
         var pages = em.GetAllInstances('page').Filter('type == \'' + type +'\'');
@@ -87,9 +81,7 @@ Global.ClientService = {
         function navigate(page) {
             page.SetField('previous', true);
             Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.page, type + '-' + page.number));
-            if (pushstate) {
-                Aspectize.Host.ExecuteCommand(aas.Services.Browser.History.PushState(type, aas.Path.MainData.page, type + '-' + page.number, '', type + '?page=' + page.number));
-            }
+            Aspectize.Host.ExecuteCommand(aas.Services.Browser.History.PushState(type, aas.Path.MainData.page, type + '-' + page.number, '', type + '?page=' + page.number));
         }
 
         if (!page) {

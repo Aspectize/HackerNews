@@ -10,21 +10,17 @@ var commentRoot = item.TreeViewComments.AddNodeBinding('CommentNode', aas.Data.M
 commentRoot.AutoExpand.BindData(true);
 commentRoot.timeago.BindData(commentRoot.DataSource.timeago);
 commentRoot.user.BindData(commentRoot.DataSource.user);
-commentRoot.content.BindData(commentRoot.DataSource.content);
-//commentRoot.content.BindData(aas.Services.Browser.ClientService.SetHtml(commentRoot.DataSource.id, commentRoot.DataSource.content));
-commentRoot.commentId.BindData(commentRoot.DataSource.id);
 commentRoot.commentscount.BindData(commentRoot.DataSource.commentscount);
 commentRoot.displayCommentsCount.BindData(aas.Expression(IIF(commentRoot.DataSource.commentscount, '', 'hidden')));
+commentRoot.OnNodeLoad.BindCommand(aas.Services.Browser.ClientService.SetHtml('', "ContextualData:[Current].content"));
 
 var commentChild = commentRoot.AddNodeBinding('CommentNode', commentRoot.ParentData.comments_ROLE_Parent.item, true, true, "time DESC", '!deleted');
 commentChild.AutoExpand.BindData(true);
-commentChild.content.BindData(commentChild.DataSource.content);
-//commentChild.content.BindData(aas.Services.Browser.ClientService.SetHtml(commentChild.DataSource.id, commentChild.DataSource.content));
 commentChild.timeago.BindData(commentChild.DataSource.timeago);
 commentChild.user.BindData(commentChild.DataSource.user);
-commentChild.commentId.BindData(commentChild.DataSource.id);
 commentChild.commentscount.BindData(commentChild.DataSource.commentscount);
 commentChild.displayCommentsCount.BindData(aas.Expression(IIF(commentChild.DataSource.commentscount, '', 'hidden')));
+commentChild.OnNodeLoad.BindCommand(aas.Services.Browser.ClientService.SetHtml('', "ContextualData:[Current].content"));
 
 var user = Aspectize.CreateView('user', aas.Controls.user, aas.Zones.Home.ZoneInfo, false, aas.Data.MainData.user);
 user.OnActivated.BindCommand(aas.Services.Browser.History.PushState(aas.ViewName.user, aas.Path.MainData.user, user.ParentData.id, '', aas.Expression('user/' + user.ParentData.id)));

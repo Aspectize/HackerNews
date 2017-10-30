@@ -116,10 +116,10 @@ namespace HackerNews
 		}
 
 		[Data(PhysicalName = "comments_count")]
-		public string commentscount
+		public int commentscount
 		{
-			get { return getValue<string>("commentscount"); }
-			set { setValue<string>("commentscount", value); }
+			get { return getValue<int>("commentscount"); }
+			set { setValue<int>("commentscount", value); }
 		}
 
 		[Data]

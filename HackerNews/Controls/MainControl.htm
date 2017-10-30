@@ -81,8 +81,8 @@
 
     <div aas-control="name:'CommentTree', binding:'TreeBinding', properties : {AfterNodeCreation:0}, templateBuilders:['TreeViewBuilder']" class='aasTreeView'></div>
 
-    <div aas-control="name:'CommentNode', isControlPart:true, events:['OnFirstExpand', 'Click'], properties:{ImageUrl:null, AutoExpand:false, HasChild:false}">
-        <div class="row itemElement {commentId}">
+    <div aas-control="name:'CommentNode', isControlPart:true, events:['OnFirstExpand', 'Click', 'OnNodeLoad'], properties:{ImageUrl:null, AutoExpand:false, HasChild:false}">
+        <div class="row itemElement">
             <div class="col-xs-12">
                 <div class="row">
                     <div class="col-xs-12">
@@ -91,7 +91,7 @@
                 </div>
                 <div class="row rowContent">
                     <div class="col-xs-12 content">
-                        {content}
+                        
                     </div>
                 </div>
             </div>
