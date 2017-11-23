@@ -2,11 +2,10 @@ function Main() {
 
     Aspectize.Host.CanWorkOffline = true;
 
-    Aspectize.Host.InitApplication(function () {
+    Aspectize.Host.InitApplication();
 
-        Aspectize.Host.ExecuteCommand('UIService.ShowView', 'news');
+    Aspectize.Host.ExecuteCommand('UIService.ShowView', 'news');
 
-        Aspectize.InitializeHistoryManager({ ViewName: 'news', SchemaPath: 'MainData.page', Id: 'news-1', Url: 'app.ashx' });
-    });
+    Aspectize.InitializeHistoryManager({ ViewName: 'news', SchemaPath: 'MainData.page', Id: 'news-1', Url: 'app.ashx' });
 
 }
