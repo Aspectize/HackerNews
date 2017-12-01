@@ -15,28 +15,24 @@ namespace HackerNews.Services
         {
             var translators = new List<RewriteOrRedirect>();
 
-            //var patternItem = @"/hackernews/(?<type>item|user)/(?<id>\d{1,10})$";
-            var patternItem = @"/hackernews/(?<type>item|user)/(id=)?(?<id>\d{1,10})$";
+            var regItemOrUser = new Regex(@"/hackernews/(?<type>item|user)\?(id=)?(?<id>\w{1,10})$", RegexOptions.IgnoreCase);
 
-            var reg = new Regex(patternItem, RegexOptions.IgnoreCase);
-
-            var regCategory = new Regex(@"/hackernews/(?<type>news|jobs|ask|show)?page=(?<page>\d{1,10})$", RegexOptions.IgnoreCase);
+            var regCategory = new Regex(@"/hackernews/(?<type>news|jobs|ask|show)\?page=(?<page>\d{1,10})$", RegexOptions.IgnoreCase);
 
             translators.Add((Uri url, ref bool redirect) =>
             {
                 redirect = false;
 
-                var m = reg.Match(url.AbsoluteUri);
+                var m = regItemOrUser.Match(url.AbsoluteUri);
 
                 if (m.Success)
                 {
                     var type = m.Groups["type"].Value.ToLower();
-
                     var id = m.Groups["id"].Value;
 
                     var redirectUrl = string.Format("/HackerNews/app.ashx?@ClientService.DisplayItem&type={0}&id={1}", type, id);
 
-                    var returnUrl = reg.Replace(url.AbsoluteUri, redirectUrl);
+                    var returnUrl = regItemOrUser.Replace(url.AbsoluteUri, redirectUrl);
 
                     return returnUrl;
                 }
@@ -48,8 +44,9 @@ namespace HackerNews.Services
                     var type = mCategory.Groups["type"].Value.ToLower();
                     var page = mCategory.Groups["page"].Value.ToLower();
 
-                    //var redirectUrl = string.Format("/HackerNews/app.ashx?@{0}", type);
-                    var redirectUrl = string.Format("/HackerNews/app.ashx?@ClientService.NextPage&type={0}&number={1}", type, page);
+                    var pageInt = int.Parse(page);
+
+                    var redirectUrl = string.Format("/HackerNews/app.ashx?@ClientService.ActivatePage&type={0}&number={1}", type, pageInt - 1);
 
                     var returnUrl = regCategory.Replace(url.AbsoluteUri, redirectUrl);
 
