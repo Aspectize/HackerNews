@@ -20,7 +20,7 @@ namespace HackerNews.Services
 
             var reg = new Regex(patternItem, RegexOptions.IgnoreCase);
 
-            var regCategory = new Regex(@"/hackernews/(?<type>jobs|ask|show)$", RegexOptions.IgnoreCase);
+            var regCategory = new Regex(@"/hackernews/(?<type>news|jobs|ask|show)?page=(?<page>\d{1,10})$", RegexOptions.IgnoreCase);
 
             translators.Add((Uri url, ref bool redirect) =>
             {
@@ -46,8 +46,10 @@ namespace HackerNews.Services
                 if (mCategory.Success)
                 {
                     var type = mCategory.Groups["type"].Value.ToLower();
+                    var page = mCategory.Groups["page"].Value.ToLower();
 
-                    var redirectUrl = string.Format("/HackerNews/app.ashx?@{0}", type);
+                    //var redirectUrl = string.Format("/HackerNews/app.ashx?@{0}", type);
+                    var redirectUrl = string.Format("/HackerNews/app.ashx?@ClientService.NextPage&type={0}&number={1}", type, page);
 
                     var returnUrl = regCategory.Replace(url.AbsoluteUri, redirectUrl);
 
