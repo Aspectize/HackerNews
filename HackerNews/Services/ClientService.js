@@ -42,8 +42,8 @@
 
         if (!number) {
             if (previousPage) {
-                var activePageId = Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.GetCurrent(aas.Path.MainData.page));
-                if (previousPage.id !== activePageId) {
+                var activePage = Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.GetCurrent(aas.Path.MainData.page));
+                if (previousPage.id !== activePage.id) {
                     navigate(previousPage);
                 }
                 return;
