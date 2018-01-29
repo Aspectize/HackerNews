@@ -3,11 +3,12 @@
     aasService: 'ClientService',
     MainData: 'MainData',
     aasCommandAttributes: {
+        DisplayUser: { CanExecuteOnStart: true },
         DisplayItem: { CanExecuteOnStart: true },
         ActivatePage: { CanExecuteOnStart: true }
     },
 
-    DisplayItem: function (type, id) {
+    DisplayUser: function (id) {
         var cmd = Aspectize.Host.PrepareCommand();
 
         cmd.Attributes.aasAsynchronousCall = true;
@@ -16,11 +17,38 @@
         cmd.Attributes.aasMergeData = true;
 
         cmd.OnComplete = function (result) {
-            Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent('MainData.' + type, id));
-            Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.ShowView(type));
+            Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent('MainData.user', id));
+            Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.user));
         };
 
-        cmd.Call('Server/LoadDataService.GetItem', type, id);
+        cmd.Call('Server/LoadDataService.GetItem', 'user', id);
+    },
+
+    DisplayItem: function (type, id) {
+        var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
+
+        var pages = em.GetAllInstances('page');
+
+        var pageTypes = pages.Filter('type == \'' + type + '\' && previous');
+
+        var activePage = pageTypes[0];
+
+        var cmd = Aspectize.Host.PrepareCommand();
+
+        cmd.Attributes.aasAsynchronousCall = true;
+        cmd.Attributes.aasShowWaiting = true;
+        cmd.Attributes.aasDataName = this.MainData;
+        cmd.Attributes.aasMergeData = true;
+
+        cmd.OnComplete = function (result) {
+            var item = em.GetInstance('item', id);
+            item.SetField('page', activePage.number);
+
+            Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent('MainData.item', id));
+            Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.item));
+        };
+
+        cmd.Call('Server/LoadDataService.GetItem', 'item', id);
     },
 
     ActivatePage: function (type, number) {
@@ -31,6 +59,8 @@
         var pageTypes = pages.Filter('type == \'' + type + '\' && previous');
 
         var previousPage = (pageTypes.length > 0) ? pageTypes[0] : null;
+
+        var viewIsVisible = $('#' + type).is(":visible");
 
         function navigate(page) {
             page.SetField('previous', true);
@@ -43,7 +73,7 @@
         if (!number) {
             if (previousPage) {
                 var activePage = Aspectize.Host.ExecuteCommand(aas.Services.Browser.UIService.GetCurrent(aas.Path.MainData.page));
-                if (previousPage.id !== activePage.id) {
+                if (previousPage.id !== activePage.id || !viewIsVisible) {
                     navigate(previousPage);
                 }
                 return;

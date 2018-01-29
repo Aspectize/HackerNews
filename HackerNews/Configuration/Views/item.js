@@ -6,7 +6,7 @@ item.header.timeago.BindData(item.ParentData.timeago);
 item.header.title.BindData(item.ParentData.title);
 item.header.user.BindData(item.ParentData.user);
 item.header.showArticle.href.BindData(item.ParentData.url);
-item.header.showUser.click.BindCommand(aas.Services.Browser.ClientService.DisplayItem('user', item.ParentData.user));
+item.header.showUser.click.BindCommand(aas.Services.Browser.ClientService.DisplayUser(item.ParentData.user));
 
 var commentRoot = item.TreeViewComments.AddNodeBinding('CommentNode', aas.Data.MainData.item.comments_ROLE_Parent.item, false, false, 'time DESC', '!deleted');
 commentRoot.AutoExpand.BindData(true);

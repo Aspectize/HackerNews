@@ -32,6 +32,11 @@ namespace HackerNews.Services
 
                     var redirectUrl = string.Format("/HackerNews/app.ashx?@ClientService.DisplayItem&type={0}&id={1}", type, id);
 
+                    if (type == "user")
+                    {
+                        redirectUrl = string.Format("/HackerNews/app.ashx?@ClientService.DisplayUser&id={0}", id);
+                    }
+
                     var returnUrl = regItemOrUser.Replace(url.AbsoluteUri, redirectUrl);
 
                     return returnUrl;
