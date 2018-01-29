@@ -23,21 +23,6 @@
         cmd.Call('Server/LoadDataService.GetItem', type, id);
     },
 
-    SetHtmlComment: function (aasEventArg, content) {
-        var element = $(aasEventArg.HtmlItem).find('.content');
-        element.html(content);
-    },
-
-    SetHtmlAbout: function (content) {
-        var element = $('#user').find('.about');
-        element.html(content);
-    },
-
-    ActiveMenuBar: function (menuSelector, activeMenuSelector) {
-        $(menuSelector + ' > ul > li').removeClass('active');
-        $(menuSelector + ' > ul > li ' + activeMenuSelector).parent().addClass('active');
-    },
-
     ActivatePage: function (type, number) {
         var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
 
@@ -87,7 +72,21 @@
         } else {
             navigate(page);
         }
-    }
+    },
 
+    SetHtmlComment: function (aasEventArg, content) {
+        var element = $(aasEventArg.HtmlItem).find('.content');
+        element.html(content);
+    },
+
+    SetHtmlAbout: function (content) {
+        var element = $('#user').find('.about');
+        element.html(content);
+    },
+
+    ActiveMenuBar: function (menuSelector, activeMenuSelector) {
+        $(menuSelector + ' > ul > li').removeClass('active');
+        $(menuSelector + ' > ul > li ' + activeMenuSelector).parent().addClass('active');
+    }
 };
 
