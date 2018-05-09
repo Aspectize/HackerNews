@@ -80,6 +80,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\Logo128x128.png" />
+    <Content Include="images\Logo192x192.png" />
+    <Content Include="images\Logo24x24.png" />
+    <Content Include="images\Logo300x300.png" />
+    <Content Include="images\Logo384x384.png" />
+    <Content Include="images\Logo48x48.png" />
+    <Content Include="images\Logo50x50.png" />
+    <Content Include="images\Logo512x512.png" />
+    <Content Include="images\Logo88x88.png" />
     <Content Include="manifest.json" />
     <None Include="Schema\HackerNews.Entities">
       <Generator>AspectizeEntitiesCodeGenerator2012</Generator>
