@@ -18,12 +18,14 @@ namespace HackerNews
     public class LoadDataService : ILoadDataService 
     {
         const string rootUrl = "https://hnpwa.com/api/v0/";
+        const string rootUrlNewApi = "https://api.hnpwa.com/v0/";
 
         DataSet ILoadDataService.GetItemPage(string type, int page)
         {
             IEntityManager em = EntityManager.FromDataSet(new DataSet());
 
-            var url = rootUrl + $"{type}.json?page={page}";
+            //var url = rootUrl + $"{type}.json?page={page}";
+            var url = rootUrlNewApi + $"{type}/{page}.json";
 
             getDataFromHNAPI(url, em, "item", type);
 
@@ -44,7 +46,7 @@ namespace HackerNews
         {
             IEntityManager em = EntityManager.FromDataSet(new DataSet());
 
-            var url = rootUrl + $"{type}/{id}.json";
+            var url = rootUrlNewApi + $"{type}/{id}.json";
 
             getDataFromHNAPI(url, em, type, type);
 

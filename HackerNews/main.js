@@ -1,8 +1,9 @@
 function Main() {
 
-    Aspectize.Host.CanWorkOffline = true;
+    Aspectize.App.CanWorkOffline = true;
+    Aspectize.App.CookieLess = true;
 
-    Aspectize.Host.InitApplication(function () {
+    Aspectize.App.Initialize(function () {
 
         if (!Aspectize.Host.UrlArgs.StartingViewOrCommandName) {
             Aspectize.Host.ExecuteCommand('ClientService.ActivatePage', 'news', 1);

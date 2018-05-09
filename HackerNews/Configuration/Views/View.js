@@ -11,6 +11,8 @@ listheader.displayPrevious.BindData(aas.Expression(IIF(listheader.ParentData.num
 listheader.number.BindData(listheader.ParentData.number);
 listheader.previous.click.BindCommand(aas.Services.Browser.ClientService.ActivatePage(listheader.ParentData.type, aas.Expression(listheader.ParentData.number - 1)));
 listheader.next.click.BindCommand(aas.Services.Browser.ClientService.ActivatePage(listheader.ParentData.type, aas.Expression(listheader.ParentData.number + 1)));
+listheader.previousBottom.click.BindCommand(aas.Services.Browser.ClientService.ActivatePage(listheader.ParentData.type, aas.Expression(listheader.ParentData.number - 1)));
+listheader.nextBottom.click.BindCommand(aas.Services.Browser.ClientService.ActivatePage(listheader.ParentData.type, aas.Expression(listheader.ParentData.number + 1)));
 
 var news = Aspectize.CreateView('news', aas.Controls.items, aas.Zones.listheader.ZoneInfo, true);
 news.OnActivated.BindCommand(aas.Services.Browser.ClientService.ActiveMenuBar('#bs-example-navbar-collapse-1', '#Home-news'));
