@@ -1,6 +1,5 @@
 function Main() {
 
-    Aspectize.App.CanWorkOffline = true;
     Aspectize.App.CookieLess = true;
 
     Aspectize.App.Initialize(function () {
